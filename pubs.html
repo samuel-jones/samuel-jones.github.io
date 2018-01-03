@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Good Samwise Pub Guide - London</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <style>
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      #layer_selector {
+        position: absolute;
+        top: 60px;
+        right: 30px;
+        padding: 0;
+      }
+
+      #layer_selector ul {
+        padding: 0; margin: 0;
+        list-style-type: none;
+      }
+
+      #layer_selector li {
+        border-bottom: 1px solid #999;
+        padding: 15px 30px;
+        font-family: "Helvetica", Arial;
+        font-size: 13px;
+        color: #444;
+        cursor: auto;
+      }
+
+      #layer_selector li:hover {
+        background-color: #F0F0F0;
+        cursor: pointer;
+      }
+
+      #layer_selector li.selected {
+        background-color: #EEE;
+      }
+
+
+      @import url(http://yui.yahooapis.com/pure/0.3.0/pure-min.css);
+  
+      p { margin: 0; padding: 0; font-family: calibri; display: block;
+        color: 005c46;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;}
+    
+
+    
+     #dashboard {
+          background: #fff;
+          border-left: 1px solid #000;    
+          height: 100%;
+          font-family: 'calibri';
+       overflow-y: scroll;
+          padding: 10px;
+          position: absolute; left: 0px;
+          text-align: left;
+          top: 0;
+          z-index: 2001;
+          opacity: 0.95;
+          width: 230px;
+      }
+
+
+    </style>
+
+    <script type="infowindow/html" id="infowindow_template">
+  <div class="cartodb-popup v2">
+    <a href="#close" class="cartodb-popup-close-button close">x</a>
+     <div class="cartodb-popup-content-wrapper">
+       <div class="cartodb-popup-header">
+         <img style="width: 100%" src="https://cartodb.com/assets/logos/logos_full_cartodb_light.png"></src>
+       </div>
+       <div class="cartodb-popup-content">
+         <!-- content.data contains the field info -->
+         <h4>City: </h4>
+         <p>{{content.data.name}}</p>
+       </div>
+     </div>
+     <div class="cartodb-popup-tip-container"></div>
+  </div>
+</script>
+
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="layer_selector" class="cartodb-infobox">
+      <ul>
+        <li data="all" class="selected">All pubs</li>
+        <li data="1">My recommend pubs</li>
+        
+      </ul>
+          </div>
+
+<div id="dashboard">
+    <div id="info"><h2 style='color:#005c46'>London Pub Guide</h2>
+    <p style='color:#005c46'>Pan around the map and click on a pub for a brief summary.</p>
+    <p style='color:#005c46'>Use the selection on the right of the page to explore my personal recommendations.</p>
+ <p ><img src="https://dl.dropboxusercontent.com/u/61220964/Beer/1.png" align="center"width="28" height="28">&nbsp;&nbsp;&nbsp;Beer range</p><p p style="font-size:12px">(1 = limited selection, 2 = decent selection and 3 = good selection of craft beer and real ales)</p>
+ <p><img src="https://dl.dropboxusercontent.com/u/61220964/Price/1.png" align="center"width="28" height="28">&nbsp;&nbsp;&nbsp;Price</n><p <p p style="font-size:12px">((1 = cheap as chips, 2= average London price, 3 = don't expect much change from a fiver)</p>
+ <p><img src="https://dl.dropboxusercontent.com/u/61220964/clientele/1.png" align="center">&nbsp;&nbsp;Hipster haunt</p>
+ <p><img src="https://dl.dropboxusercontent.com/u/61220964/clientele/2.png" align="center" width="28" height="28">&nbsp;&nbsp;&nbsp;Casual/Sporty</p>
+ <p><img src="https://dl.dropboxusercontent.com/u/61220964/clientele/3.png" align="center"width="28" height="28">&nbsp;&nbsp;Expect to see suits</p>
+ <p><img src="https://dl.dropboxusercontent.com/u/61220964/clientele/4.png" align="center"width="28" height="28">&nbsp;&nbsp;Old man pub</p>
+ <p><img src="https://dl.dropboxusercontent.com/u/61220964/clientele/5.png" align="center"width="28" height="28">&nbsp;&nbsp;Music types </p>
+
+
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+
+
+    <script>
+
+
+      // create layer selector
+      function createSelector(layer) {
+        var sql = new cartodb.SQL({ user: 'documentation' });
+
+        var $options = $('#layer_selector li');
+        $options.click(function(e) {
+          // get the area of the selected layer
+          var $li = $(e.target);
+          var area = $li.attr('data');
+
+          // deselect all and select the clicked one
+          $options.removeClass('selected');
+          $li.addClass('selected');
+
+          // create query based on data from the layer
+          var query = "select * from london_pubs_osm_sj";
+
+
+
+          if(area !== 'all') {
+            query = "select * from london_pubs_osm_sj where my_rating = " + area;
+          }
+
+          // change the query in the layer to update the map
+          layer.setSQL(query);
+        });
+      }
+
+      function main() {
+        cartodb.createVis('map', 'https://samwise.carto.com/api/v2/viz/fadbe65a-87eb-11e6-8746-0e98b61680bf/viz.json', {
+          tiles_loader: true,
+          //center_lat: 51.55,
+          //center_lon: -0.07,
+          zoom: 15
+        })
+        .done(function(vis, layers) {
+          // layer 0 is the base layer, layer 1 is cartodb layer
+          var subLayer = layers[1].getSubLayer(0);
+createSelector(subLayer);
+
+
+sublayer.set(subLayerOptions);
+
+sublayers.push(sublayer);
+detectUserLocation();
+
+
+          
+        })
+        .error(function(err) {
+          console.log(err);
+        });
+
+ function detectUserLocation(){
+  if (navigator.geolocation) {
+    var timeoutVal = 10 * 1000 * 1000;
+    navigator.geolocation.watchPosition(
+      mapToPosition, 
+      alertError,
+      { enableHighAccuracy: true, timeout: timeoutVal, maximumAge: 0 }
+    );
+  }
+  else {
+    alert("Geolocation is not supported by this browser");
+  }
+
+  function alertError(error) {
+    var errors = { 
+      1: 'Permission denied',
+      2: 'Position unavailable',
+      3: 'Request timeout'
+    };
+    alert("Error: " + errors[error.code]);
+  }
+}
+
+
+function mapToPosition(position) {
+  lon = position.coords.longitude;
+  lat = position.coords.latitude;
+  map.setView(new L.LatLng(lat,lon), 7);
+  new L.CircleMarker([lat,lon],{radius: 4}).addTo(map);
+}
+
+        sublayer.infowindow.set('template', $('#infowindow_template').html());
+
+
+      }
+
+
+
+
+
+
+
+
+      window.onload = main;
+    </script>
+  </body>
+</html>
