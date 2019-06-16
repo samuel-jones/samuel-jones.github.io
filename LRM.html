@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Local Route Maps Interactive | CartoDB.js</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <style>
+	
+	@media screen and (min-width: 900px) {
+	
+	
+  
+   #selector_menu{
+      	position: absolute;
+      	top: 20px;
+      	left: 500px;
+      	z-index: 9000;
+      }
+  
+  p { color: #005c46;
+	font-size: 100%;margin: 0; padding: 0; font-family: calibri; display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;text-align:left ;}
+  
+  h2 {color: #00a246;font-size: 130%; }
+  
+  #dashboard{
+    margin-left: 0px;
+    overflow: hidden;
+    text-align: left;
+	overflow-y: scroll;
+    }
+#dashboard p {
+    text-align:left;
+    } 
+	
+	
+	#layer_selector li {
+        border-bottom: 1px solid #999;
+        padding: 15px 30px;
+        font-family:  'calibri';
+        font-size: 12px;
+        color: "#005c46";
+        cursor: auto;
+		width: 130px;
+      }
+  
+  }
+  
+  
+	
+	@media screen and (max-width: 800px) {
+  
+  
+
+  
+   img.resize{
+    width:50%
+    height: auto;
+}
+   
+  
+  #info {
+    visibility: yes;
+    clear: both;
+    float: left;
+    width: 50%;
+   
+    
+  }
+  
+  #info2 {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 28%;
+   
+    
+  }
+  
+   #info3 {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 28%;
+   
+    
+  }
+  
+  #info4 {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 28%;
+   
+    
+  }
+  
+   #chart_div {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 0%;
+   
+    
+  }
+  
+  #chart_div2 {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 0%;
+   
+    
+  }
+  
+    #chart_div3 {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 0%;
+   
+    
+  }
+  
+    #chart_div4 {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 0%;
+   
+    
+  }
+  
+  #table_div {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 0%;
+   
+    
+  }
+  
+  #table_div2 {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 0%;
+   
+    
+  }
+  
+  #Old {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 0%;
+   
+    
+  }
+  
+  #Deprivation {
+    visibility: hidden;
+    clear: both;
+    float: left;
+    width: 0%;
+   
+    
+  }
+  
+    p {color: #005c46;
+	font-size: 50%;margin: 0; padding: 0; font-family: calibri; display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;text-align:left ;	}
+  
+  h2 {color: #00a246; font-size: 70%; }
+  
+  #layer_selector {
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 0;
+      }
+ 
+      #layer_selector ul {
+        padding: 0; margin: 0;
+        list-style-type: none;
+      }
+ 
+      #layer_selector li {
+        border-bottom: 1px solid #999;
+        padding: 5px 5px;
+        font-family: "Helvetica", Arial;
+        font-size: 8px;
+        color: #444;
+        cursor: auto;
+		width: 100px;
+      }
+ 
+      #layer_selector li:hover {
+        background-color: #F0F0F0;
+        cursor: pointer;
+      }
+ 
+      #layer_selector li.selected {
+        background-color: #EEE;
+      }
+	  
+ 
+    
+}
+	
+	@import url(http://yui.yahooapis.com/pure/0.3.0/pure-min.css);
+	
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+			      
+      }
+	  
+	  
+	  p { margin: 0; padding: 0; font-family: calibri; display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;}
+	  
+
+	  
+	   #dashboard {
+          background: #fff;
+          border-left: 1px solid #000;    
+          height: 100%;
+		  font-family: 'calibri';
+		   overflow-y: scroll;
+          padding: 10px;
+          position: absolute; left: 0px;
+          text-align: left;
+          top: 0;
+          z-index: 2001;
+          opacity: 0.95;
+          width: 385px;
+      }
+      #chart_div {
+          height: 300px;
+          width: 300px;
+      }
+	  
+	  #chart_div2 {
+          height: 300px;
+          width: 400px;
+      }
+	  
+	 
+	 	  
+	  #table_div {
+          height: 400px;
+          width: 400px;
+      }
+ 
+      #layer_selector {
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 0;
+      }
+ 
+      #layer_selector ul {
+        padding: 0; margin: 0;
+        list-style-type: none;
+      }
+ 
+      #layer_selector li {
+        border-bottom: 1px solid #999;
+        padding: 15px 30px;
+        font-family: "Helvetica", Arial;
+        font-size: 13px;
+        color: #444;
+        cursor: auto;
+      }
+ 
+ 
+ #layer_selector li:not(:last-child) {
+                border-bottom: 1px solid #999;
+            }
+			
+      #layer_selector li:hover {
+        background-color: #F0F0F0;
+        cursor: pointer;
+      }
+	  
+	  
+      
+	  
+</style>
+    </style>
+ 
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" />
+    <![endif]-->
+  </head>
+  <body>
+  
+ 
+    <div id="map"></div>
+	
+	<div id="Deprivation" class='cartodb-legend choropleth'>
+	
+<div class="legend-title" style="color:#005c46">Deprivation</div>
+<ul>
+<li class="graph leg" style="border-radius: 0; border:none">
+<div class="colors">
+<div class="quartile" style="background-color:#00a246"></div>
+<div class="quartile" style="background-color:#8cc635"></div>
+<div class="quartile" style="background-color:#ffebaf"></div>
+<div class="quartile" style="background-color:#f18315"></div>
+<div class="quartile" style="background-color:#e32333"></div>
+</div>
+</li>
+<p style="padding-top:2px">&nbsp;Least deprived&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Most deprived</p>
+</ul>
+</div>
+
+
+
+<div id="Old" class='cartodb-legend choropleth'>
+	
+<div class="legend-title" style="color:#005c46">% of people aged 65+</div>
+<ul>
+<li class="graph leg" style="border-radius: 0; border:none">
+<div class="colors">
+<div class="quartile" style="background-color:#d9f0a3"></div>
+<div class="quartile" style="background-color:#b0d158"></div>
+<div class="quartile" style="background-color:#00a246"></div>
+<div class="quartile" style="background-color:#005c4f"></div>
+<div class="quartile" style="background-color:#003324"></div>
+</div>
+</li>
+<p style="padding-top:2px">&nbsp;&nbsp;Low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Average&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;High</p>
+</ul>
+</div>
+
+
+
+
+    <div id="layer_selector" class="cartodb-infobox">
+      <ul>
+	 
+        <li id="Lon" class="selected">London</li>
+		<li id="Mids" class="selected">Midlands</li>
+        <li id="North"class="selected">North</li>
+       <li id="NW"class="selected">North West</li>
+	   <li id="SE"class="selected">South East</li>
+<li id="SW"class="selected">South West</li>
+<li id="Eng"class="selected">All England</li>
+      </ul>
+    </div>
+	
+	
+	
+	
+	
+	
+	
+	 
+ 
+<div id="dashboard">
+    <div id="info"><h2 style='color:#005c46'>Cancer Data Dashboard for <b style='color:#00a246'>England's Macmillan Region</b></h2><p style='color:#005c46'><img src= 'https://pixabay.com/static/uploads/photo/2012/04/26/19/47/man-42934_640.png' style='float:left;width:40px;height:40px'><font size='5' font style='color:#00a246'>2million</font> <font style='color:#005c46'> people living with cancer at the end of 2010</p ><img src= 'https://pixabay.com/static/uploads/photo/2012/04/26/19/47/man-42934_640.png' style='float:left;width:40px;height:40px'><font size = '5' font style='color:#00a246'>160,493</font> people sadly die from cancer each year </p><p style='color:#005c46'><img src= 'https://pixabay.com/static/uploads/photo/2012/04/26/19/47/man-42934_640.png' style='float:left;width:40px;height:40px'><font size = '5' font style='color:#00a246'>344,733</font> people are diagnosed with a cancer each year</p> 
+		
+		<p style='color:#005c46'>Select your region from the drop down menu. Select whether to view data for a Local Authority, CCG, STP or Cancer Alliance.Pan and zoom around the map and click on an area for statistics in your local area.</p>
+		<p style='color:#005c46'>Alternatively use the button below to allow the browser to locate where you are.</p><button class="pure-button pure-button-primary">Get my location</button>
+	<p style='color:#005c46'>You can toggle different layers on or off from the list on the right to provide different contextual data. Local Authorities will show population and demographics, and CCGs will show key cancer metrics</p>
+	<p style='color:#005c46'>In order to return to this page at any time simply refresh the page.</p>
+	<p style='color:#005c46'>Further information and details on the sources of data can be found <a href="http://www.macmillan.org.uk/Aboutus/WhatWeDo/Ouresearchandevaluation/Macmillansresearch.aspx">here.</a></p>
+<a href="http://www.macmillan.org.uk/"><img src= 'http://www.macmillan.org.uk/SiteElements/Images/Logo.jpg' img align="bottom"></a> </div>
+
+
+	
+				
+	<div id="chart_div"></div>
+	
+ 
+ <div id="info2">  </div>
+<div id="chart_div2">   </div> 	
+
+ 
+ <div id="info3"></div>
+ <div id="table_div">   </div>
+ <div id="info4"></div>
+ </div>
+ 
+ <div id='selector_menu'>
+		<select id='selector'>
+		<optgroup label='SHOW DATA BY:'>
+		<optgroup label='Lower Super Output Area'>
+			<option value='lsoa_pop65'>Population aged 65+</option>
+			<option value = 'lsoa_bme'>BME population</option>
+			<option value = 'lsoa_bme'>Income Deprivation</option>
+			<option value = 'lsoa_fpi'>Fuel Poverty Index</option>
+		<optgroup label='Local Authority'>	
+			<option value = 'la_inc'>Incidence</option>
+			<option value = 'la_mort'>Mortality</option>
+			<option value = 'la_bo'>LA boundary only</option>
+			
+		<optgroup label='Clinical Commissioning Group (CCG)'>		
+			<option value = 'ccg_inc'>Incidence</option>
+			<option value = 'ccg_mort'>Mortality</option>
+			<option value = 'ccg_em'>Survival</option>
+			<option value = 'ccg_cpes'>CPES Q59</option>
+			<option value = 'ccg_bo'>CCG boundary only</option>
+		<optgroup label='STP'>		
+			<option value = 'stp_surv'>Survival</option>
+			<option value = 'stp_bo'>STP boundary only</option>
+		<optgroup label='Cancer Alliance'>	
+			<option value = 'ca_surv'>Survival</option>
+			<option value = 'ca_bo'>Alliance boundary only</option>
+		<optgroup label='Macmillan Region'>		
+			<option value = 'ca_bo'>Macmillan Region boundary only</option>
+		<optgroup label='Hospitals'>		
+			<option value = 'truston'>Show trusts</option>
+			<option value = 'trustoff'>Hide trusts</option>
+			
+			
+			
+			
+		</div>
+
+  
+    <script type="infowindow/html" id="infowindow_template">
+    </script>
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+	<script type="text/javascript">
+	
+	
+
+	  
+    </script>
+
+ 
+    <script>
+
+	
+	  
+     
+ 
+ //cant remember what this does but have left it in just in case does something important: 
+      var layerN = {};
+	  
+	  
+//now create our main map and adjust zoom levels, etc
+      function main() {
+    var map = L.map('map', {
+          zoomControl: false,
+          center: [54.4, -6.5],
+          zoom: 6,
+		  shareable: true
+        });
+	
+	
+		
+        // get the currently selected style in layer selecter:
+        selectedStyle = $('li.selected').attr('id');
+		
+		//select our tile layers and add attribution, license etc:		
+		// L.tileLayer('http://{s}.tile.thunderforest.com/spinal-map/{z}/{x}/{y}.png', {
+        //  attribution: 'Contains National Statistics and Ordnance Survey data © Crown copyright and database //right 2015'
+		  //        }).addTo(map);
+ 
+ //use the cartodb template set up in my account using the json:
+        cartodb.createLayer(map, 'https://samwise.carto.com/api/v2/viz/cf956e50-47a1-11e7-b58a-0e3ff518bd15/viz.json', {
+            shareable: true,
+            title: true,
+            description: false,
+            search: true,
+            tiles_loader: true,
+            layer_selector:true,
+            cartodb_logo: false,
+            legends: false
+        })
+        .addTo(map)
+        .done(function(layers) {
+          createSelector(layers);
+		
+		  
+//add a get my location button:
+		 $('.pure-button').on('click', function(){
+  map.locate({setView: true, maxZoom: 15});
+});
+
+map.on('locationfound', onLocationFound);
+function onLocationFound(e) {
+    L.marker(e.latlng).addTo(map);
+}
+      
+			   
+			   
+	//on loading the map we want to hide our legends:
+		  $("#Old").hide();
+		  $("#Deprivation").hide();
+	
+//	we can also control which layers we want to appear on loadup:
+		  
+		   layers.getSubLayer(0).hide(); // LSOAs
+           layers.getSubLayer(1).hide(); // CCG
+           layers.getSubLayer(2).hide(); // STP
+           layers.getSubLayer(3).hide(); // Alliance
+		   layers.getSubLayer(4).show(); // Trusts
+		   
+		   
+// add a search location bar:		  
+var v = cdb.vis.Overlay.create('search', map.viz, {})
+		v.show(); $('#map').append(v.render().el);
+		
+
+// add our contextual layers with no interaction:			
+var sublayer = layers.getSubLayer(0);
+sublayer.setInteraction(true);			
+			 
+var sublayer = layers.getSubLayer(1);
+sublayer.setInteraction(true);
+
+
+
+
+
+
+// as the free public cartodb account only allows 4 layers, we could add additional layers in the code here:
+
+var macIcon = L.icon({
+    iconUrl: 'http://www.macmillan.org.uk/Images/Silhouettes/ObjectsSmall/PiggyBank230x129.jpg',
+	  iconSize:     [18, 18], // size of the icon   
+});
+
+//var UKOMarker = L.marker([51.499989, -3.180837],{icon: macIcon}).addTo(map).bindPopup("A hospital here.");
+
+//var UKOMarker2 = L.marker([51.499989, -2.180837],{icon: macIcon}).addTo(map).bindPopup("Another here.");
+
+
+
+
+// for our boundaries layer set interaction and when selected by click load our custom info windows complete with google charts referencing our data held in the layers on cartodb:		  
+
+
+			
+			
+var sublayer = layers.getSubLayer(0); //lsoa
+var sublayer2 = layers.getSubLayer(1);	//ccg
+var sublayer3 = layers.getSubLayer(2);	//stp
+var sublayer4 = layers.getSubLayer(3); //caln
+var sublayer5 = layers.getSubLayer(4);	//la	
+		
+
+			
+			var LayerActions = {
+						la_inc: function(){
+			  layers.getSubLayer(0).hide();
+              layers.getSubLayer(1).hide();
+              layers.getSubLayer(2).hide();
+			  layers.getSubLayer(3).hide();	
+			 layers.getSubLayer(4).show();				
+						
+						
+							return true;
+							
+							
+						},
+						la_mort: function(){
+			  layers.getSubLayer(0).hide();
+              layers.getSubLayer(1).hide();
+              layers.getSubLayer(2).hide();
+			  layers.getSubLayer(3).hide();	
+			  layers.getSubLayer(4).show();	
+							return true;
+						},
+						
+						la_prev: function(){
+			  layers.getSubLayer(0).hide();
+              layers.getSubLayer(1).hide();
+              layers.getSubLayer(2).hide();
+			  layers.getSubLayer(3).hide();	
+			  layers.getSubLayer(4).show();	
+			  
+			  
+							return true;
+						},
+						
+						
+						lsoa_bme: function(){
+			  layers.getSubLayer(0).show();
+              layers.getSubLayer(1).hide();
+              layers.getSubLayer(2).hide();
+			  layers.getSubLayer(3).hide();	
+			  layers.getSubLayer(4).hide();	
+			  
+			  
+							return true;
+						},
+						
+						
+						ccg_inc: function(){
+			  layers.getSubLayer(0).hide();
+              layers.getSubLayer(1).show();
+              layers.getSubLayer(2).hide();
+			  layers.getSubLayer(3).hide();	
+			  layers.getSubLayer(4).hide();	
+						
+						
+						
+							return true;
+							
+							
+						},
+						ccg_mort: function(){
+			  layers.getSubLayer(0).hide();
+              layers.getSubLayer(1).show();
+              layers.getSubLayer(2).hide();
+			  layers.getSubLayer(3).hide();	
+			  layers.getSubLayer(4).hide();	
+							return true;
+						},
+						
+						ccg_prev: function(){
+			  layers.getSubLayer(0).hide();
+              layers.getSubLayer(1).show();
+              layers.getSubLayer(2).hide();
+			  layers.getSubLayer(3).hide();	
+			  layers.getSubLayer(4).hide();	
+			  
+			  
+							return true;
+						},
+						
+						stp_bo: function(){
+						
+			layers.getSubLayer(0).hide(); // Lsoa
+           layers.getSubLayer(1).hide(); // CCG
+           layers.getSubLayer(2).show(); // STP
+           layers.getSubLayer(3).hide(); // Alliance
+		   layers.getSubLayer(4).hide(); // LADs
+		   
+		   //sublayer2.setCartoCSS("#cancersurvbystpc  {polygon-fill: #000;polygon-opacity: 0.7;line-color: #3E7BB6;line-width: 0.5;line-opacity: 1;}");
+						
+							return true;
+						},
+						
+			stp_suev: function(){
+						
+			layers.getSubLayer(0).hide(); // LAs
+           layers.getSubLayer(1).hide(); // CCG
+           layers.getSubLayer(2).show(); // STP
+           layers.getSubLayer(3).hide(); // Alliance
+		   //layers.getSubLayer(4).hide(); // Trusts
+		   
+		 //  sublayer4.setCartoCSS("#ccg {polygon-fill: #000;polygon-opacity: 0.7;line-color: #3E7BB6;line-width: 0.5;line-opacity: 1;}");
+						
+							return true;
+						},			
+						
+						
+						
+						layer5: function(){
+			  layers.getSubLayer(0).hide();
+              layers.getSubLayer(1).hide();
+              layers.getSubLayer(2).hide();
+			  layers.getSubLayer(3).hide();	
+			  
+			  
+			  
+							return true;
+						},
+						
+						truston: function(){
+							
+							  layers.getSubLayer(4).show();	
+			  
+							
+							
+							return true;
+						},
+						
+						trustoff: function(){
+							
+							  layers.getSubLayer(4).hide();	
+			  
+							
+							
+							return true;
+						}
+						
+						
+						
+					}
+
+				$('#selector').change(function() {
+					 LayerActions[$(this).val()]();
+					
+					 
+				});	
+			
+			            
+                       
+
+//do the same again for another layer (BP):			
+
+	 var selectedLayer;
+      // create layer selector to toggle layers
+      function createSelector(layers) {
+        var sql = new cartodb.SQL({ user: 'documentation' });
+ 
+        var $options = $('#layer_selector li');
+        $options.click(function(e) {
+          // get the area of the selected layer
+              var $li = $(e.target);
+          var layer = $li.attr('id');
+          if(selectedLayer != layer ){
+            // definitely more elegant ways to do this, but went for
+            // ease of understanding
+			
+            if (layer == 'Lon'){
+			
+			
+			sublayer.setSQL("SELECT * FROM lrm_heatmap WHERE mac = 'London'");
+			sublayer2.setSQL("SELECT * FROM ccg WHERE mac = 'London'");
+			sublayer4.setSQL("SELECT * FROM stp_data WHERE mac = 'London'");
+			sublayer3.setSQL("SELECT * FROM caln WHERE first_mac = 'London'");
+			sublayer5.setSQL("SELECT * FROM lad WHERE mac = 'London'");				
+			
+			$("#info").html("<h2 style='color:#005c46'>Local Cancer Statistics for London <b style='color:#00a246'><br><br><img src= 'londonlrm.png' style='float:center;height:410px'>" );
+			$("#info2").empty();
+			$("#info3").empty();
+			$("#info4").empty();
+			$('#chart_div').empty();
+			$('#chart_div2').empty();
+			$('#table_div').empty();
+			
+			
+			map.setView([51.4205, -0.234007],10);
+			 
+            }
+			
+			
+			
+            else if (layer == 'Mids') {
+			
+sublayer.setSQL("SELECT * FROM lrm_heatmap WHERE mac = 'Midlands'");
+			sublayer2.setSQL("SELECT * FROM ccg WHERE mac = 'Midlands'");
+			sublayer4.setSQL("SELECT * FROM stp_data WHERE mac = 'Midlands'");
+			sublayer3.setSQL("SELECT * FROM caln WHERE first_mac = 'Midlands'");
+			sublayer5.setSQL("SELECT * FROM lad WHERE mac = 'Midlands'");					
+		
+		$("#info").html("<h2 style='color:#005c46'>Local Cancer Statistics for Midlands <b style='color:#00a246'><br><br><img src= 'midslrm.png' style='float:center;height:410px'>" );
+			$("#info2").empty();
+			$("#info3").empty();
+			$("#info4").empty();
+			$('#chart_div').empty();
+			$('#chart_div2').empty();
+			$('#table_div').empty();
+		
+		
+			map.setView([52.5205, -1.6607],8);
+			
+              
+            }
+			
+			else if (layer == 'North') {
+			
+			
+			sublayer.setSQL("SELECT * FROM lrm_heatmap WHERE mac = 'North'");
+			sublayer2.setSQL("SELECT * FROM ccg WHERE mac = 'North'");
+			sublayer4.setSQL("SELECT * FROM stp_data WHERE mac = 'North'");
+			sublayer3.setSQL("SELECT * FROM caln WHERE first_mac = 'North'");
+			sublayer5.setSQL("SELECT * FROM lad WHERE mac = 'North'");		
+			
+			
+			$("#info").html("<h2 style='color:#005c46'>Local Cancer Statistics for North <b style='color:#00a246'><br><br><img src= 'northlrm.png' style='float:center;height:410px'>" );
+			$("#info2").empty();
+			$("#info3").empty();
+			$("#info4").empty();
+			$('#chart_div').empty();
+			$('#chart_div2').empty();
+			$('#table_div').empty();
+			
+			map.setView([52.5205, -1.6607],6)
+             
+            }
+			
+			else if (layer == 'NW') {
+			
+			
+					sublayer.setSQL("SELECT * FROM lrm_heatmap WHERE mac = 'North West'");
+			sublayer2.setSQL("SELECT * FROM ccg WHERE mac = 'North West'");
+			sublayer4.setSQL("SELECT * FROM stp_data WHERE mac = 'North West'");
+			sublayer3.setSQL("SELECT * FROM caln WHERE first_mac = 'North West'");
+			sublayer5.setSQL("SELECT * FROM lad WHERE mac = 'North West'");	
+			
+			$("#info").html("<h2 style='color:#005c46'>Local Cancer Statistics for North West West <b style='color:#00a246'><br><br><img src= 'nwlrm.png' style='float:center;height:410px'>" );
+			$("#info2").empty();
+			$("#info3").empty();
+			$("#info4").empty();
+			$('#chart_div').empty();
+			$('#chart_div2').empty();
+			$('#table_div').empty();
+			
+			map.setView([54.0205, -2.8007],8);
+			
+             
+            }
+			
+			else if (layer == 'SE') {
+			
+			
+			sublayer.setSQL("SELECT * FROM lrm_heatmap WHERE mac = 'South East'");
+			sublayer2.setSQL("SELECT * FROM ccg WHERE mac = 'South East'");
+			sublayer4.setSQL("SELECT * FROM stp_data WHERE mac = 'South East'");
+			sublayer3.setSQL("SELECT * FROM caln WHERE first_mac = 'South East'");
+			sublayer5.setSQL("SELECT * FROM lad WHERE mac = 'South East'");	
+			
+			$("#info").html("<h2 style='color:#005c46'>Local Cancer Statistics for South East <b style='color:#00a246'><br><br><img src= 'selrm.png' style='float:center;height:410px'>" );
+			$("#info2").empty();
+			$("#info3").empty();
+			$("#info4").empty();
+			$('#chart_div').empty();
+			$('#chart_div2').empty();
+			$('#table_div').empty();
+			
+			map.setView([51.0205, -3.24007],8);
+             
+            }
+			
+			else if (layer == 'SW') {
+			
+					sublayer.setSQL("SELECT * FROM lrm_heatmap WHERE mac = 'South West'");
+			sublayer2.setSQL("SELECT * FROM ccg WHERE mac = 'South West'");
+			sublayer4.setSQL("SELECT * FROM stp_data WHERE mac = 'South West'");
+			sublayer3.setSQL("SELECT * FROM caln WHERE first_mac = 'South West'");
+			sublayer5.setSQL("SELECT * FROM lad WHERE mac = 'South West'");	
+			
+			$("#info").html("<h2 style='color:#005c46'>Local Cancer Statistics for South West <b style='color:#00a246'><br><br><img src= 'swlrm.png' style='float:center;height:410px'>" );
+			$("#info2").empty();
+			$("#info3").empty();
+			$("#info4").empty();
+			$('#chart_div').empty();
+			$('#chart_div2').empty();
+			$('#table_div').empty();
+			
+			map.setView([51.4205, -3.234007],8)
+             
+            }
+			
+		
+			
+            else {
+			
+			
+			//sublayer4.setSQL("SELECT * FROM stp_data");
+						
+							map.setView([52.5205, -1.6607],6);
+						
+			
+			
+			map.setView([52.5205, -1.6607],6)
+           
+            }
+          }
+        });
+      }		
+			
+          }).on('error', function() {
+            console.log("some error occurred");
+          });
+		  
+		  
+          
+      }
+	  
+	  
+	  
+	  
+	  
+	    window.onload = main;
+		
+</script><script src="./webfontloader,dygraph,format+en,default+en,ui+en,bar+en,corechart+en.I.js" type="text/javascript"></script><script src="./table+en.js" type="text/javascript"></script> -->
+  </body>
+</html>
