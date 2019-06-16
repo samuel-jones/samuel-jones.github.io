@@ -7,17 +7,20 @@
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
   <style> 
     body { margin:0; padding:0; } 
-    #map { position:absolute; top:0; bottom:0; width:100%; } </style>
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
   </head>
   <body> 
-    <div id='map'>
-    </div> 
-    <script> mapboxgl.accessToken = '';
+    
+    <div id='map'></div> 
+    <script>
+      mapboxgl.accessToken = '';
       var map = new mapboxgl.Map({
         container: 'map', // container id
         style: 'https://samuel-jones.github.io/brew-dog-map/style.json', // stylesheet location
         center: [-1.25, 52.2], // starting position [lng, lat]
-        zoom: 6 // starting zoom }); 
+        zoom: 6 // starting zoom
+      }); 
     </script> 
   </body>
 </html>
